@@ -475,8 +475,8 @@ For software update systems with a large number of target files, delegating to
 hashed bins (a special type of delegated role) might be an easier alternative to
 manually performing the delegations.  How many target files should each delegated
 role contain?  How will these delegations affect the number of metadata that
-clients must additionally download in a typical update?  Hashed bin delegations
-is availabe to integrators that rather not deal with the answers to these
+clients must additionally download in a typical update?  The hashed bin delegations
+feature is available to integrators who would rather not deal with the answers to these
 questions.
 
 A large number of target files may be distributed to multiple hashed bins with
@@ -535,3 +535,5 @@ metadata and target files on the repository is enabled by setting the
 ```Python
 >>> repository.write(consistent_snapshot=True)
 ```
+
+Turning on the consistent snapshot setting updates the root role and therefore requires that root's keys be imported.
