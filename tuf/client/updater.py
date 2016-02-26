@@ -1588,7 +1588,7 @@ class Updater(object):
 
     # Check for the availability of compressed versions of 'snapshot.json',
     # 'targets.json', and delegated Targets (that also start with 'targets').
-    # For 'targets.json' and delegated metadata, 'referenced_metata'
+    # For 'targets.json' and delegated metadata, 'referenced_metadata'
     # should always be 'snapshot'.  'snapshot.json' specifies all roles
     # provided by a repository, including their version numbers.
     if metadata_role == 'snapshot' or metadata_role.startswith('targets'):
