@@ -346,13 +346,13 @@ class TestIndefiniteFreezeAttack(unittest_toolbox.Modified_TestCase):
     # must be properly updated and signed with 'repository_tool.py', otherwise
     # the client will reject it as invalid metadata.  The resulting
     # 'timestamp.json' should be valid metadata, but expired (as intended).
-    repository = repo_tool.load_repository(self.repository_directory)
+    #repository = repo_tool.load_repository(self.repository_directory)
  
-    key_file = os.path.join(self.keystore_directory, 'timestamp_key')
-    timestamp_private = repo_tool.import_rsa_privatekey_from_file(key_file,
-                                                                  'password')
+    #key_file = os.path.join(self.keystore_directory, 'timestamp_key')
+    #timestamp_private = repo_tool.import_rsa_privatekey_from_file(key_file,
+    #                                                              'password')
 
-    repository.timestamp.load_signing_key(timestamp_private)
+    #repository.timestamp.load_signing_key(timestamp_private)
     
     # Set timestamp metadata to expire soon.
     # We cannot set the timestamp expiration with
