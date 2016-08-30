@@ -105,7 +105,8 @@ METADATA_EXTENSIONS = ['.json']
 def _generate_and_write_metadata(rolename, metadata_filename, write_partial,
                                  targets_directory, metadata_directory,
                                  consistent_snapshot=False, filenames=None,
-                                 compression_algorithms=['gz']):
+                                 compression_algorithms=['gz'],
+                                 do_not_increment_version=False):
   """
   Non-public function that can generate and write the metadata of the specified
   top-level 'rolename'.  It also increments version numbers if:
@@ -117,6 +118,8 @@ def _generate_and_write_metadata(rolename, metadata_filename, write_partial,
   """
 
   metadata = None 
+
+  version_increment = 0 if do_not_increment_version else 1
 
   # Retrieve the roleinfo of 'rolename' to extract the needed metadata
   # attributes, such as version number, expiration, etc.
@@ -180,9 +183,9 @@ def _generate_and_write_metadata(rolename, metadata_filename, write_partial,
     temp_signable['signatures'].extend(roleinfo['signatures'])
     status = tuf.sig.get_signature_status(temp_signable, rolename)
     if len(status['good_sigs']) == 0:
-      metadata['version'] = metadata['version'] + 1
+      metadata['version'] = metadata['version'] + version_increment
       roleinfo = tuf.roledb.get_roleinfo(rolename)
-      roleinfo['version'] = roleinfo['version'] + 1
+      roleinfo['version'] = roleinfo['version'] + version_increment
       tuf.roledb.update_roleinfo(rolename, roleinfo)
       signable = sign_metadata(metadata, roleinfo['signing_keyids'],
                                metadata_filename)
@@ -192,9 +195,9 @@ def _generate_and_write_metadata(rolename, metadata_filename, write_partial,
     # both the metadata file and roledb (required so that snapshot references
     # the latest version).
     if tuf.sig.verify(signable, rolename) and not roleinfo['partial_loaded']:
-      metadata['version'] = metadata['version'] + 1
+      metadata['version'] = metadata['version'] + version_increment
       roleinfo = tuf.roledb.get_roleinfo(rolename)
-      roleinfo['version'] = roleinfo['version'] + 1
+      roleinfo['version'] = roleinfo['version'] + version_increment
       tuf.roledb.update_roleinfo(rolename, roleinfo) 
       signable = sign_metadata(metadata, roleinfo['signing_keyids'],
                                metadata_filename)

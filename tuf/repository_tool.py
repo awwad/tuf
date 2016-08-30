@@ -179,7 +179,7 @@ class Repository(object):
 
 
   def write(self, write_partial=False, consistent_snapshot=False,
-            compression_algorithms=['gz']):
+            compression_algorithms=['gz'], do_not_increment_version=False):
     """
     <Purpose>
       Write all the JSON Metadata objects to their corresponding files.
@@ -266,7 +266,8 @@ class Repository(object):
                                             write_partial,
                                             self._targets_directory,
                                             self._metadata_directory,
-                                            consistent_snapshot)
+                                            consistent_snapshot,
+                                            do_not_increment_version=do_not_increment_version)
     
     # Generate the 'root.json' metadata file.
     # _generate_and_write_metadata() raises a 'tuf.Error' exception if the
@@ -278,7 +279,8 @@ class Repository(object):
       repo_lib._generate_and_write_metadata('root', root_filename, write_partial,
                                             self._targets_directory,
                                             self._metadata_directory,
-                                            consistent_snapshot)
+                                            consistent_snapshot,
+                                            do_not_increment_version=do_not_increment_version)
 
     # Generate the 'targets.json' metadata file.
     targets_filename = repo_lib.TARGETS_FILENAME
@@ -289,7 +291,8 @@ class Repository(object):
                                             write_partial,
                                             self._targets_directory,
                                             self._metadata_directory,
-                                            consistent_snapshot)
+                                            consistent_snapshot,
+                                            do_not_increment_version=do_not_increment_version)
     
     # Generate the 'snapshot.json' metadata file.
     snapshot_filename = repo_lib.SNAPSHOT_FILENAME 
@@ -302,7 +305,8 @@ class Repository(object):
                                             write_partial,
                                             self._targets_directory,
                                             self._metadata_directory,
-                                            consistent_snapshot, filenames)
+                                            consistent_snapshot, filenames,
+                                            do_not_increment_version=do_not_increment_version)
 
     # Generate the 'timestamp.json' metadata file.
     timestamp_filename = repo_lib.TIMESTAMP_FILENAME
@@ -313,7 +317,8 @@ class Repository(object):
                                           write_partial,
                                           self._targets_directory,
                                           self._metadata_directory,
-                                          consistent_snapshot, filenames)
+                                          consistent_snapshot, filenames,
+                                            do_not_increment_version=do_not_increment_version)
      
     # Delete the metadata of roles no longer in 'tuf.roledb'.  Obsolete roles
     # may have been revoked and should no longer have their metadata files
