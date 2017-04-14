@@ -46,7 +46,7 @@ class OctetString(univ.OctetString):
     pass
 
 
-OctetString.subtypeSpec = constraint.ValueSizeConstraint(1, 1024)
+OctetString.subtypeSpec = constraint.ValueSizeConstraint(0, 1024)
 
 
 class BitString(univ.BitString):
@@ -230,7 +230,7 @@ class Repositories(univ.SequenceOf):
 
 
 Repositories.componentType = Repository()
-Repositories.subtypeSpec=constraint.ValueSizeConstraint(2, 2)
+Repositories.subtypeSpec=constraint.ValueSizeConstraint(0, 1024)
 
 
 class Path(char.VisibleString):
@@ -245,7 +245,7 @@ class Paths(univ.SequenceOf):
 
 
 Paths.componentType = Path()
-Paths.subtypeSpec=constraint.ValueSizeConstraint(1, 8)
+Paths.subtypeSpec=constraint.ValueSizeConstraint(0, 1024)
 
 
 class RepositoryNames(univ.SequenceOf):
@@ -253,7 +253,7 @@ class RepositoryNames(univ.SequenceOf):
 
 
 RepositoryNames.componentType = RepositoryName()
-RepositoryNames.subtypeSpec=constraint.ValueSizeConstraint(2, 2)
+RepositoryNames.subtypeSpec=constraint.ValueSizeConstraint(0, 1024)
 
 
 class Mapping(univ.Sequence):
