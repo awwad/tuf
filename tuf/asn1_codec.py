@@ -143,10 +143,12 @@ def convert_signed_der_to_dersigned_json(der_data):
         # first two characters (which we expect to be '0x' indicating a hex
         # string). See if there's a better method of converting from the
         # octetString to what TUF expects.
-        'keyid': asn_signature['keyid']['octetString'].prettyPrint()[2:],
-        # TODO: See if it's possible to tweak the definition of 'method' so that str(method) returns what we want rather here than the enum, so that we don't have to do make this weird enum translation call?
-        'method': asn_signature['method'].namedValues[asn_signature['method']._value][0], #str(asn_signature['method']),
-        'sig': asn_signature['value']['octetString'].prettyPrint()[2:]})
+        'keyid': asn_signature['keyid'].prettyPrint()[2:],
+        # TODO: See if it's possible to tweak the definition of 'method' so
+        # that str(method) returns what we want rather here than the enum, so
+        # that we don't have to do make this weird enum translation call?
+        'method': asn_signature['method'].namedValues[asn_signature['method'].
+        _value][0], 'sig': asn_signature['value'].prettyPrint()[2:]})
 
   return {'signatures': json_signatures, 'signed': json_signed}
 
@@ -310,12 +312,7 @@ def convert_signed_metadata_to_der(
     # to use a class that inherits from that auto-generated class... but that's
     # quite confusing to a reader, too.
     # asn_sig['keyid'] = pydict_sig['keyid'] # <- used to just be this
-    asn_sig['keyid'] = metadata_asn1_spec.Keyid().subtype(
-        explicitTag=p_type_tag.Tag(p_type_tag.tagClassContext,
-        p_type_tag.tagFormatConstructed, 0))
-    asn_sig['keyid']['octetString'] = p_type_univ.OctetString(
-        hexValue=pydict_sig['keyid']).subtype(implicitTag=p_type_tag.Tag(
-        p_type_tag.tagClassContext, p_type_tag.tagFormatSimple, 1))
+    asn_sig['keyid'] = metadata_asn1_spec.Keyid(hexValue=pydict_sig['keyid'])
 
 
     # Because 'method' is an enum, extracting the string value is a bit messy.
@@ -329,12 +326,8 @@ def convert_signed_metadata_to_der(
     # the way to do this might be to use a class that inherits from that
     # auto-generated class... but that's quite confusing to a reader, too.
     #asn_sig['value'] = pydict_sig['sig'] # <- used to just be this
-    asn_sig['value'] = metadata_asn1_spec.BinaryData().subtype(
-        explicitTag=p_type_tag.Tag(p_type_tag.tagClassContext,
-        p_type_tag.tagFormatConstructed, 2))
-    asn_sig['value']['octetString'] = p_type_univ.OctetString(
-        hexValue=pydict_sig['sig']).subtype(implicitTag=p_type_tag.Tag(
-        p_type_tag.tagClassContext, p_type_tag.tagFormatSimple, 1))
+    asn_sig['value'] = metadata_asn1_spec.OctetString(
+        hexValue=pydict_sig['sig'])
 
 
     # Add to the Signatures() list.

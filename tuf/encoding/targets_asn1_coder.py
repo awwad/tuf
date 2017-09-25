@@ -15,7 +15,7 @@
 """
 from __future__ import unicode_literals
 
-from pyasn1.type import univ, tag
+from pyasn1.type import tag
 
 from tuf.encoding.metadata_asn1_definitions import *
 
@@ -92,20 +92,11 @@ def set_asn_keys(json_signed, delegations):
     keymeta = json_signed['delegations']['keys'][keyid]
     key = PublicKey()
 
-    key['publicKeyid'] = Keyid().subtype(explicitTag=tag.Tag(
-        tag.tagClassContext, tag.tagFormatConstructed, 0))
-    key['publicKeyid']['octetString'] = univ.OctetString(
-        hexValue=keyid).subtype(implicitTag=tag.Tag(tag.tagClassContext,
-        tag.tagFormatSimple, 1))
+    key['publicKeyid'] = Keyid(hexValue=keyid)
 
     key['publicKeyType'] = int(PublicKeyType(keymeta['keytype']))
-    value = BinaryData().subtype(explicitTag=tag.Tag(tag.tagClassContext,
-                                                     tag.tagFormatConstructed,
-                                                     2))
-    octetString = univ.OctetString(hexValue=keymeta['keyval']['public'])\
-                  .subtype(implicitTag=tag.Tag(tag.tagClassContext,
-                                               tag.tagFormatSimple, 1))
-    value['octetString'] = octetString
+    value = OctetString(hexValue=keymeta['keyval']['public'])
+    # value['octetString'] = octetString
     key['publicKeyValue'] = value
     keys[numberOfKeys] = key
     numberOfKeys += 1
@@ -157,10 +148,7 @@ def set_asn_roles(json_signed, delegations):
     sorted_keyids = sorted(json_role['keyids'])
     for json_keyid in sorted_keyids:
 
-      keyid = Keyid().subtype(explicitTag=tag.Tag(
-          tag.tagClassContext, tag.tagFormatConstructed, 0))
-      keyid['octetString'] = univ.OctetString(hexValue=json_keyid).subtype(
-          implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 1))
+      keyid = Keyid(hexValue=json_keyid)
 
       # Some damned bug in pyasn1 I could not care less to fix right now.
       keyids.setComponentByPosition(numberOfKeyids, keyid, False)
@@ -212,13 +200,7 @@ def set_asn_targets(json_signed, targetsMetadata):
       hash_value = filemeta['hashes'][hash_function]
       hash = Hash()
       hash['function'] = int(HashFunction(hash_function))
-      digest = BinaryData()\
-               .subtype(explicitTag=tag.Tag(tag.tagClassContext,
-                                            tag.tagFormatConstructed, 1))
-      octetString = univ.OctetString(hexValue=hash_value)\
-                    .subtype(implicitTag=tag.Tag(tag.tagClassContext,
-                                                 tag.tagFormatSimple, 1))
-      digest['octetString'] = octetString
+      digest = OctetString(hexValue=hash_value)
       hash['digest'] = digest
       hashes[numberOfHashes] = hash
       numberOfHashes += 1
@@ -280,16 +262,16 @@ def set_json_keys(json_signed, delegations):
 
   for i in range(numberOfKeys):
     key = keys[i]
-    keyid = key['publicKeyid']['octetString'].prettyPrint() #str(key['publicKeyid'])
+    keyid = key['publicKeyid'].prettyPrint()
     assert keyid.startswith('0x')
     keyid = keyid[2:]
     keytype = int(key['publicKeyType'])
     # FIXME: Only ed25519 keys allowed for now.
     assert keytype == 1
     keytype = 'ed25519'
-    octetString =  key['publicKeyValue']['octetString'].prettyPrint()
-    assert octetString.startswith('0x')
-    keyval = octetString[2:]
+    keyval =  key['publicKeyValue'].prettyPrint()
+    assert keyval.startswith('0x')
+    keyval = keyval[2:]
     json_keys[keyid] = {
       "keyid_hash_algorithms": [
         "sha256",
@@ -374,9 +356,9 @@ def set_json_targets(json_signed, targetsMetadata):
     for j in range(numberOfHashes):
       hash = hashes[j]
       hash_function = hashenum_to_hashfunction[int(hash['function'])]
-      octetString = hash['digest']['octetString'].prettyPrint()
-      assert octetString.startswith('0x')
-      hash_value = octetString[2:]
+      hash_value = hash['digest'].prettyPrint()
+      assert hash_value.startswith('0x')
+      hash_value = hash_value[2:]
       json_hashes[hash_function] = hash_value
     filemeta['hashes'] = json_hashes
 

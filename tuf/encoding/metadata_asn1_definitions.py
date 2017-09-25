@@ -49,23 +49,6 @@ class OctetString(univ.OctetString):
 OctetString.subtypeSpec = constraint.ValueSizeConstraint(1, 1024)
 
 
-class BitString(univ.BitString):
-    pass
-
-
-BitString.subtypeSpec=constraint.ValueSizeConstraint(1, 1024)
-
-
-class BinaryData(univ.Choice):
-    pass
-
-
-BinaryData.componentType = namedtype.NamedTypes(
-    namedtype.NamedType('bitString', BitString().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 0))),
-    namedtype.NamedType('octetString', OctetString().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 1)))
-)
-
-
 class EncryptedSymmetricKeyType(univ.Enumerated):
     pass
 
@@ -83,7 +66,7 @@ class EncryptedSymmetricKey(univ.Sequence):
 
 EncryptedSymmetricKey.componentType = namedtype.NamedTypes(
     namedtype.NamedType('encryptedSymmetricKeyType', EncryptedSymmetricKeyType().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 0))),
-    namedtype.NamedType('encryptedSymmetricKeyValue', BinaryData().subtype(explicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatConstructed, 1)))
+    namedtype.NamedType('encryptedSymmetricKeyValue', OctetString().subtype(explicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatConstructed, 1)))
 )
 
 
@@ -131,9 +114,8 @@ class Hash(univ.Sequence):
 
 
 Hash.componentType = namedtype.NamedTypes(
-    namedtype.NamedType('function', HashFunction().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 0))),
-    namedtype.NamedType('digest', BinaryData().subtype(explicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatConstructed, 1)))
-)
+    namedtype.NamedType('function', HashFunction()),
+    namedtype.NamedType('digest', OctetString()))
 
 
 class Hashes(univ.SequenceOf):
@@ -176,7 +158,7 @@ Custom.componentType = namedtype.NamedTypes(
 )
 
 
-class Keyid(BinaryData):
+class Keyid(OctetString):
     pass
 
 
@@ -304,10 +286,9 @@ class Signature(univ.Sequence):
 
 
 Signature.componentType = namedtype.NamedTypes(
-    namedtype.NamedType('keyid', Keyid().subtype(explicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatConstructed, 0))),
-    namedtype.NamedType('method', SignatureMethod().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 1))),
-    namedtype.NamedType('value', BinaryData().subtype(explicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatConstructed, 2)))
-)
+    namedtype.NamedType('keyid', Keyid()),
+    namedtype.NamedType('method', SignatureMethod()),
+    namedtype.NamedType('value', OctetString()))
 
 
 class Signatures(univ.SequenceOf):
@@ -400,9 +381,9 @@ class PublicKey(univ.Sequence):
 
 
 PublicKey.componentType = namedtype.NamedTypes(
-    namedtype.NamedType('publicKeyid', Keyid().subtype(explicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatConstructed, 0))),
-    namedtype.NamedType('publicKeyType', PublicKeyType().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 1))),
-    namedtype.NamedType('publicKeyValue', BinaryData().subtype(explicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatConstructed, 2)))
+    namedtype.NamedType('publicKeyid', Keyid()),
+    namedtype.NamedType('publicKeyType', PublicKeyType()),
+    namedtype.NamedType('publicKeyValue', OctetString())
 )
 
 
