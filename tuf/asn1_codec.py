@@ -121,7 +121,7 @@ def convert_signed_der_to_dersigned_json(der_data):
   # We call lower() on it because I don't care about the casing, which has
   # varied somewhat in TUF history, and I don't want casing to ruin this
   # detection.
-  metadata_type = asn_type_data.namedValues[asn_type_data._value][0].lower()
+  metadata_type = asn_type_data.namedValues[asn_type_data._value].lower()
 
   # Make sure it's a supported type of metadata for ASN.1 to Python dict
   # translation. (Throw an exception if not.)
@@ -148,7 +148,7 @@ def convert_signed_der_to_dersigned_json(der_data):
         # that str(method) returns what we want rather here than the enum, so
         # that we don't have to do make this weird enum translation call?
         'method': asn_signature['method'].namedValues[asn_signature['method'].
-        _value][0], 'sig': asn_signature['value'].prettyPrint()[2:]})
+        _value], 'sig': asn_signature['value'].prettyPrint()[2:]})
 
   return {'signatures': json_signatures, 'signed': json_signed}
 
