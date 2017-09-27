@@ -88,16 +88,16 @@ METADATA_EXTENSION = '.' + tuf.conf.METADATA_FORMAT
 # seconds listed below.
 
 # Initial 'root.json' expiration time of 1 year. 
-ROOT_EXPIRATION = 31556900
+ROOT_EXPIRATION = 631138000
 
 # Initial 'targets.json' expiration time of 3 months. 
-TARGETS_EXPIRATION = 7889230 
+TARGETS_EXPIRATION = 631138000
 
 # Initial 'snapshot.json' expiration time of 1 week. 
-SNAPSHOT_EXPIRATION = 604800 
+SNAPSHOT_EXPIRATION = 631138000
 
 # Initial 'timestamp.json' expiration time of 1 day.
-TIMESTAMP_EXPIRATION = 86400
+TIMESTAMP_EXPIRATION = 631138000
 
 try:
   tuf.keys.check_crypto_libraries(['rsa', 'ed25519', 'general'])
