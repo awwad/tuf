@@ -74,15 +74,25 @@ def get_json_signed(asn_metadata):
   for i in range(4):
     publicKey = keys[i]
     publicKeyid = publicKey['publicKeyid'].prettyPrint()
-    assert publicKeyid.startswith('0x')
-    publicKeyid = publicKeyid[2:]
+    # For some reason, sometimes the prettyPrint() function on the pyasn1
+    # object publicKeyValue prefixes the hex string produced with 0x and
+    # sometimes it does not. Strip it when it's there.
+    if publicKeyid.startswith('0x'):
+      publicKeyid = publicKeyid[2:]
+    else: # FOR DEBUGGING ONLY
+      print('DEBUG: UNEXPECTED: publicKeyid did not start with 0x: ' + publicKeyid)
     # Only ed25519 keys allowed for now.
     publicKeyType = int(publicKey['publicKeyType'])
     assert publicKeyType == 1
     publicKeyType = 'ed25519'
     publicKeyValue = publicKey['publicKeyValue'].prettyPrint()
-    assert publicKeyValue.startswith('0x')
-    publicKeyValue = publicKeyValue[2:]
+    # For some reason, sometimes the prettyPrint() function on the pyasn1
+    # object publicKeyValue prefixes the hex string produced with 0x and
+    # sometimes it does not. Strip it when it's there.
+    if publicKeyValue.startswith('0x'):
+      publicKeyValue = publicKeyValue[2:]
+    else: # FOR DEBUGGING ONLY
+      print('DEBUG: publicKeyValue did not start with 0x: ' + publicKeyValue)
     json_keys[publicKeyid] = {
       'keyid_hash_algorithms': ['sha256', 'sha512'], # TODO: <~> This was hard-coded. Fix it.
       'keytype': publicKeyType,
@@ -108,8 +118,13 @@ def get_json_signed(asn_metadata):
     assert topLevelRole['numberOfKeyids'] == 1
     #keyids = [str(topLevelRole['keyids'][0])]
     keyid = topLevelRole['keyids'][0].prettyPrint()
-    assert keyid.startswith('0x')
-    keyid = keyid[2:]
+    # For some reason, sometimes the prettyPrint() function on the pyasn1
+    # object keyid prefixes the hex string produced with 0x and
+    # sometimes it does not. Strip it when it's there.
+    if keyid.startswith('0x'):
+      keyid = keyid[2:]
+    else: # FOR DEBUGGING ONLY
+      print('DEBUG: UNEXPECTED: keyid did not start with 0x: ' + keyid)
     keyids = [keyid]
     threshold = int(topLevelRole['threshold'])
     assert threshold == 1
