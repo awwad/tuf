@@ -65,8 +65,8 @@ class EncryptedSymmetricKey(univ.Sequence):
 
 
 EncryptedSymmetricKey.componentType = namedtype.NamedTypes(
-    namedtype.NamedType('encryptedSymmetricKeyType', EncryptedSymmetricKeyType().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 0))),
-    namedtype.NamedType('encryptedSymmetricKeyValue', OctetString().subtype(explicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatConstructed, 1)))
+    namedtype.NamedType('encryptedSymmetricKeyType', EncryptedSymmetricKeyType()),
+    namedtype.NamedType('encryptedSymmetricKeyValue', OctetString())
 )
 
 
@@ -138,10 +138,10 @@ class Target(univ.Sequence):
 
 
 Target.componentType = namedtype.NamedTypes(
-    namedtype.NamedType('filename', Filename().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 0))),
-    namedtype.NamedType('length', Length().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 1))),
-    namedtype.NamedType('numberOfHashes', Length().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 2))),
-    namedtype.NamedType('hashes', Hashes().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 3)))
+    namedtype.NamedType('filename', Filename()),
+    namedtype.NamedType('length', Length()),
+    namedtype.NamedType('numberOfHashes', Length()),
+    namedtype.NamedType('hashes', Hashes())
 )
 
 
@@ -150,11 +150,11 @@ class Custom(univ.Sequence):
 
 
 Custom.componentType = namedtype.NamedTypes(
-    namedtype.OptionalNamedType('releaseCounter', Natural().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 0))),
-    namedtype.OptionalNamedType('hardwareIdentifier', Identifier().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 1))),
-    namedtype.OptionalNamedType('ecuIdentifier', Identifier().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 2))),
-    namedtype.OptionalNamedType('encryptedTarget', Target().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatConstructed, 3))),
-    namedtype.OptionalNamedType('encryptedSymmetricKey', EncryptedSymmetricKey().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatConstructed, 4)))
+    namedtype.OptionalNamedType('releaseCounter', Natural()),
+    namedtype.OptionalNamedType('hardwareIdentifier', Identifier()),
+    namedtype.OptionalNamedType('ecuIdentifier', Identifier()),
+    namedtype.OptionalNamedType('encryptedTarget', Target()),
+    namedtype.OptionalNamedType('encryptedSymmetricKey', EncryptedSymmetricKey())
 )
 
 
@@ -201,9 +201,9 @@ class Repository(univ.Sequence):
 
 
 Repository.componentType = namedtype.NamedTypes(
-    namedtype.NamedType('name', RepositoryName().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 0))),
-    namedtype.NamedType('numberOfServers', Length().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 1))),
-    namedtype.NamedType('servers', URLs().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 2)))
+    namedtype.NamedType('name', RepositoryName()),
+    namedtype.NamedType('numberOfServers', Length()),
+    namedtype.NamedType('servers', URLs())
 )
 
 
@@ -243,11 +243,11 @@ class Mapping(univ.Sequence):
 
 
 Mapping.componentType = namedtype.NamedTypes(
-    namedtype.NamedType('numberOfPaths', Length().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 0))),
-    namedtype.NamedType('paths', Paths().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 1))),
-    namedtype.NamedType('numberOfRepositories', Length().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 2))),
-    namedtype.NamedType('repositories', RepositoryNames().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 3))),
-    namedtype.DefaultedNamedType('terminating', univ.Boolean().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 4)).subtype(value=0))
+    namedtype.NamedType('numberOfPaths', Length()),
+    namedtype.NamedType('paths', Paths()),
+    namedtype.NamedType('numberOfRepositories', Length()),
+    namedtype.NamedType('repositories', RepositoryNames()),
+    namedtype.DefaultedNamedType('terminating', univ.Boolean().subtype(value=0))
 )
 
 
@@ -264,10 +264,10 @@ class MapFile(univ.Sequence):
 
 
 MapFile.componentType = namedtype.NamedTypes(
-    namedtype.NamedType('numberOfRepositories', Length().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 0))),
-    namedtype.NamedType('repositories', Repositories().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 1))),
-    namedtype.NamedType('numberOfMappings', Length().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 2))),
-    namedtype.NamedType('mappings', Mappings().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 3)))
+    namedtype.NamedType('numberOfRepositories', Length()),
+    namedtype.NamedType('repositories', Repositories()),
+    namedtype.NamedType('numberOfMappings', Length()),
+    namedtype.NamedType('mappings', Mappings())
 )
 
 
@@ -329,8 +329,8 @@ class TargetRoleFileInfo(univ.Sequence):
 
 
 TargetRoleFileInfo.componentType = namedtype.NamedTypes(
-    namedtype.NamedType('filename', StrictFilename().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 0))),
-    namedtype.NamedType('version', Version().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 1)))
+    namedtype.NamedType('filename', StrictFilename()),
+    namedtype.NamedType('version', Version())
 )
 
 
@@ -347,11 +347,11 @@ class RootRoleFileInfo(univ.Sequence):
 
 
 RootRoleFileInfo.componentType = namedtype.NamedTypes(
-    namedtype.NamedType('filename', StrictFilename().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 0))),
-    namedtype.NamedType('version', Version().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 1))),
-    namedtype.NamedType('length', Length().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 2))),
-    namedtype.NamedType('numberOfHashes', Length().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 3))),
-    namedtype.NamedType('hashes', Hashes().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 4)))
+    namedtype.NamedType('filename', StrictFilename()),
+    namedtype.NamedType('version', Version()),
+    namedtype.NamedType('length', Length()),
+    namedtype.NamedType('numberOfHashes', Length()),
+    namedtype.NamedType('hashes', Hashes())
 )
 
 
@@ -360,9 +360,9 @@ class SnapshotMetadata(univ.Sequence):
 
 
 SnapshotMetadata.componentType = namedtype.NamedTypes(
-    namedtype.NamedType('numberOfTargetRoleFiles', Length().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 0))),
-    namedtype.NamedType('targetRoleFileInfos', TargetRoleFileInfos().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 1))),
-    namedtype.NamedType('rootRoleFileInfo', RootRoleFileInfo().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatConstructed, 2)))
+    namedtype.NamedType('numberOfTargetRoleFiles', Length()),
+    namedtype.NamedType('targetRoleFileInfos', TargetRoleFileInfos()),
+    namedtype.NamedType('rootRoleFileInfo', RootRoleFileInfo())
 )
 
 
@@ -404,12 +404,12 @@ class TopLevelRole(univ.Sequence):
 
 
 TopLevelRole.componentType = namedtype.NamedTypes(
-    namedtype.NamedType('role', RoleType().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 0))),
-    namedtype.OptionalNamedType('numberOfURLs', Length().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 1))),
-    namedtype.OptionalNamedType('urls', URLs().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 2))),
-    namedtype.NamedType('numberOfKeyids', Length().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 3))),
-    namedtype.NamedType('keyids', Keyids().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 4))),
-    namedtype.NamedType('threshold', Threshold().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 5)))
+    namedtype.NamedType('role', RoleType()),
+    namedtype.OptionalNamedType('numberOfURLs', Length()),
+    namedtype.OptionalNamedType('urls', URLs()),
+    namedtype.NamedType('numberOfKeyids', Length()),
+    namedtype.NamedType('keyids', Keyids()),
+    namedtype.NamedType('threshold', Threshold())
 )
 
 
@@ -426,10 +426,10 @@ class RootMetadata(univ.Sequence):
 
 
 RootMetadata.componentType = namedtype.NamedTypes(
-    namedtype.NamedType('numberOfKeys', Length().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 0))),
-    namedtype.NamedType('keys', PublicKeys().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 1))),
-    namedtype.NamedType('numberOfRoles', Length().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 2))),
-    namedtype.NamedType('roles', TopLevelRoles().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 3)))
+    namedtype.NamedType('numberOfKeys', Length()),
+    namedtype.NamedType('keys', PublicKeys()),
+    namedtype.NamedType('numberOfRoles', Length()),
+    namedtype.NamedType('roles', TopLevelRoles())
 )
 
 
@@ -438,11 +438,11 @@ class TimestampMetadata(univ.Sequence):
 
 
 TimestampMetadata.componentType = namedtype.NamedTypes(
-    namedtype.NamedType('filename', Filename().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 0))),
-    namedtype.NamedType('version', Version().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 1))),
-    namedtype.NamedType('length', Length().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 2))),
-    namedtype.NamedType('numberOfHashes', Length().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 3))),
-    namedtype.NamedType('hashes', Hashes().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 4)))
+    namedtype.NamedType('filename', Filename()),
+    namedtype.NamedType('version', Version()),
+    namedtype.NamedType('length', Length()),
+    namedtype.NamedType('numberOfHashes', Length()),
+    namedtype.NamedType('hashes', Hashes())
 )
 
 
@@ -451,10 +451,10 @@ class MultiRole(univ.Sequence):
 
 
 MultiRole.componentType = namedtype.NamedTypes(
-    namedtype.NamedType('rolename', StrictFilename().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 0))),
-    namedtype.NamedType('numberOfKeyids', Length().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 1))),
-    namedtype.NamedType('keyids', Keyids().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 2))),
-    namedtype.NamedType('threshold', Threshold().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 3)))
+    namedtype.NamedType('rolename', StrictFilename()),
+    namedtype.NamedType('numberOfKeyids', Length()),
+    namedtype.NamedType('keyids', Keyids()),
+    namedtype.NamedType('threshold', Threshold())
 )
 
 
@@ -471,11 +471,11 @@ class PathsToRoles(univ.Sequence):
 
 
 PathsToRoles.componentType = namedtype.NamedTypes(
-    namedtype.NamedType('numberOfPaths', Length().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 0))),
-    namedtype.NamedType('paths', Paths().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 1))),
-    namedtype.NamedType('numberOfRoles', Length().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 2))),
-    namedtype.NamedType('roles', MultiRoles().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 3))),
-    namedtype.DefaultedNamedType('terminating', univ.Boolean().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 4)).subtype(value=0))
+    namedtype.NamedType('numberOfPaths', Length()),
+    namedtype.NamedType('paths', Paths()),
+    namedtype.NamedType('numberOfRoles', Length()),
+    namedtype.NamedType('roles', MultiRoles()),
+    namedtype.DefaultedNamedType('terminating', univ.Boolean().subtype(value=0))
 )
 
 
@@ -492,10 +492,10 @@ class TargetsDelegations(univ.Sequence):
 
 
 TargetsDelegations.componentType = namedtype.NamedTypes(
-    namedtype.NamedType('numberOfKeys', Length().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 0))),
-    namedtype.NamedType('keys', PublicKeys().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 1))),
-    namedtype.NamedType('numberOfDelegations', Length().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 2))),
-    namedtype.NamedType('delegations', PrioritizedPathsToRoles().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 3)))
+    namedtype.NamedType('numberOfKeys', Length()),
+    namedtype.NamedType('keys', PublicKeys()),
+    namedtype.NamedType('numberOfDelegations', Length()),
+    namedtype.NamedType('delegations', PrioritizedPathsToRoles())
 )
 
 
@@ -504,8 +504,8 @@ class TargetAndCustom(univ.Sequence):
 
 
 TargetAndCustom.componentType = namedtype.NamedTypes(
-    namedtype.NamedType('target', Target().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatConstructed, 0))),
-    namedtype.OptionalNamedType('custom', Custom().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatConstructed, 1)))
+    namedtype.NamedType('target', Target()),
+    namedtype.OptionalNamedType('custom', Custom())
 )
 
 
@@ -522,9 +522,9 @@ class TargetsMetadata(univ.Sequence):
 
 
 TargetsMetadata.componentType = namedtype.NamedTypes(
-    namedtype.NamedType('numberOfTargets', Natural().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 0))),
-    namedtype.NamedType('targets', Targets().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 1))),
-    namedtype.OptionalNamedType('delegations', TargetsDelegations().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatConstructed, 2)))
+    namedtype.NamedType('numberOfTargets', Natural()),
+    namedtype.NamedType('targets', Targets()),
+    namedtype.OptionalNamedType('delegations', TargetsDelegations())
 )
 
 
@@ -533,10 +533,10 @@ class SignedBody(univ.Choice):
 
 
 SignedBody.componentType = namedtype.NamedTypes(
-    namedtype.NamedType('rootMetadata', RootMetadata().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatConstructed, 0))),
-    namedtype.NamedType('targetsMetadata', TargetsMetadata().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatConstructed, 1))),
-    namedtype.NamedType('snapshotMetadata', SnapshotMetadata().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatConstructed, 2))),
-    namedtype.NamedType('timestampMetadata', TimestampMetadata().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatConstructed, 3)))
+    namedtype.NamedType('rootMetadata', RootMetadata()),
+    namedtype.NamedType('targetsMetadata', TargetsMetadata()),
+    namedtype.NamedType('snapshotMetadata', SnapshotMetadata()),
+    namedtype.NamedType('timestampMetadata', TimestampMetadata())
 )
 
 
@@ -545,15 +545,15 @@ class Signed(univ.Sequence):
 
 
 Signed.componentType = namedtype.NamedTypes(
-    namedtype.NamedType('type', RoleType().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 0))),
-    namedtype.NamedType('expires', UTCDateTime().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 1))),
+    namedtype.NamedType('type', RoleType()),
+    namedtype.NamedType('expires', UTCDateTime()),
     # The next field, 'version', should ideally use Positive() instead of
     # Natural(); however there is a point during the initial write of metadata
     # during which the version may be 0 and signature checks may occur, in
     # which case conversions must succeed - so we allow 0 for version, but
     # do not expect a version 0 to be final / written to disk / transmitted.
-    namedtype.NamedType('version', Natural().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 2))),
-    namedtype.NamedType('body', SignedBody().subtype(explicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatConstructed, 3)))
+    namedtype.NamedType('version', Natural()),
+    namedtype.NamedType('body', SignedBody())
 )
 
 
@@ -562,7 +562,7 @@ class Metadata(univ.Sequence):
 
 
 Metadata.componentType = namedtype.NamedTypes(
-    namedtype.NamedType('signed', Signed().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatConstructed, 0))),
-    namedtype.NamedType('numberOfSignatures', Length().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 1))),
-    namedtype.NamedType('signatures', Signatures().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 2)))
+    namedtype.NamedType('signed', Signed()),
+    namedtype.NamedType('numberOfSignatures', Length()),
+    namedtype.NamedType('signatures', Signatures())
 )

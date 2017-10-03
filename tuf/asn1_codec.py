@@ -284,16 +284,8 @@ def convert_signed_metadata_to_der(
   else:
     pydict_signatures = signed_metadata['signatures']
 
-  # Create a pyASN.1 object of custom class Signatures, containing some
-  # unknown pyasn1 sorcery to specify types.
-  # Because this Signatures() object is going to be a member of the Metadata()
-  # object below, subtype() must be called on it to make its tags match the tags
-  # expected by the parent object that must contain it.
-  # The following documents tagging in pyasn1:
-  #   http://www.red-bean.com/doc/python-pyasn1/pyasn1-tutorial.html#1.2
-  asn_signatures_list = metadata_asn1_spec.Signatures().subtype(
-      implicitTag=p_type_tag.Tag(p_type_tag.tagClassContext,
-      p_type_tag.tagFormatSimple, 2))
+  # Create a pyASN.1 object of custom class Signatures
+  asn_signatures_list = metadata_asn1_spec.Signatures()
 
   # Now convert each Python dictionary-style signature into an ASN.1 signature
   # and stick those into the ASN.1 list just created.

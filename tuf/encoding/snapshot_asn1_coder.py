@@ -33,8 +33,7 @@ def get_asn_signed(pydict_signed):
 
   json_fileinfos = pydict_signed['meta']
 
-  target_role_fileinfos = TargetRoleFileInfos().subtype(
-      implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 1))
+  target_role_fileinfos = TargetRoleFileInfos()
   number_of_target_role_files = 0
   root_fileinfo = None
 
@@ -50,7 +49,7 @@ def get_asn_signed(pydict_signed):
 
       # TODO: Check if we've already added a root file. Raise error.
       # TODO: Add ASN1_Conversion
-      root_fileinfo = RootRoleFileInfo().subtype(implicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatConstructed, 2))
+      root_fileinfo = RootRoleFileInfo()
       root_fileinfo['filename'] = filename
       root_fileinfo['version'] = pydict_fileinfo['version']
 
@@ -62,8 +61,7 @@ def get_asn_signed(pydict_signed):
 
       root_fileinfo['length'] = pydict_fileinfo['length']
 
-      hashes = Hashes().subtype(
-          implicitTag=tag.Tag(tag.tagClassContext,tag.tagFormatSimple, 4))
+      hashes = Hashes()
       number_of_hashes = 0
 
       # We're going to generate a list of hashes from the dictionary of hashes.
@@ -115,8 +113,7 @@ def get_asn_signed(pydict_signed):
         'Root role file info entry or conversion failed for Root fileinfo.')
 
 
-  snapshot_metadata = SnapshotMetadata().subtype(implicitTag=tag.Tag(
-      tag.tagClassContext, tag.tagFormatConstructed, 2))
+  snapshot_metadata = SnapshotMetadata()
 
   snapshot_metadata['numberOfTargetRoleFiles'] = number_of_target_role_files
   snapshot_metadata['targetRoleFileInfos'] = target_role_fileinfos
@@ -124,15 +121,13 @@ def get_asn_signed(pydict_signed):
 
 
   # Construct the 'signed' entry in the Snapshot metadata file, in ASN.1.
-  asn_signed = Signed().subtype(implicitTag=tag.Tag(
-      tag.tagClassContext, tag.tagFormatConstructed, 0))
+  asn_signed = Signed()
 
   asn_signed['type'] = int(RoleType('snapshot'))
   asn_signed['expires'] = calendar.timegm(datetime.strptime(
       pydict_signed['expires'], "%Y-%m-%dT%H:%M:%SZ").timetuple())
   asn_signed['version'] = pydict_signed['version']
-  asn_signed['body'] = SignedBody().subtype(explicitTag=tag.Tag(
-      tag.tagClassContext, tag.tagFormatConstructed, 3))
+  asn_signed['body'] = SignedBody()
   asn_signed['body']['snapshotMetadata'] = snapshot_metadata
 
 

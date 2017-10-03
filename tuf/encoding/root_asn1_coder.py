@@ -24,9 +24,7 @@ from datetime import datetime #import datetime
 
 
 def get_asn_signed(json_signed):
-  rootMetadata = RootMetadata()\
-                 .subtype(implicitTag=tag.Tag(tag.tagClassContext,
-                                              tag.tagFormatConstructed, 0))
+  rootMetadata = RootMetadata()
 
   rootPublicKeyid = json_signed['roles']['root']['keyids'][0]
   timestampPublicKeyid = json_signed['roles']['timestamp']['keyids'][0]
@@ -38,13 +36,10 @@ def get_asn_signed(json_signed):
   roles = set_roles(json_signed, rootPublicKeyid, timestampPublicKeyid,
                   snapshotPublicKeyid, targetsPublicKeyid, rootMetadata)
 
-  signedBody = SignedBody()\
-               .subtype(explicitTag=tag.Tag(tag.tagClassContext,
-                                            tag.tagFormatConstructed, 3))
+  signedBody = SignedBody()
   signedBody['rootMetadata'] = rootMetadata
 
-  signed = Signed().subtype(implicitTag=tag.Tag(tag.tagClassContext,
-                                                tag.tagFormatConstructed, 0))
+  signed = Signed()
   signed['type'] = int(RoleType('root'))
   signed['expires'] = calendar.timegm(datetime.strptime(
       json_signed['expires'], "%Y-%m-%dT%H:%M:%SZ").timetuple())
@@ -139,8 +134,7 @@ def get_json_signed(asn_metadata):
 
 def set_keys(json_signed, rootPublicKeyid, timestampPublicKeyid,
              snapshotPublicKeyid, targetsPublicKeyid, rootMetadata):
-  keys = PublicKeys().subtype(implicitTag=tag.Tag(tag.tagClassContext,
-                                                  tag.tagFormatSimple, 1))
+  keys = PublicKeys()
 
   rootPublicKey = PublicKey()
   # NOTE: Only 1 key allowed for now!
@@ -195,14 +189,11 @@ def set_keys(json_signed, rootPublicKeyid, timestampPublicKeyid,
 
 def set_roles(json_signed, rootPublicKeyid, timestampPublicKeyid,
               snapshotPublicKeyid, targetsPublicKeyid, rootMetadata):
-  roles = TopLevelRoles().subtype(implicitTag=tag.Tag(tag.tagClassContext,
-                                                      tag.tagFormatConstructed,
-                                                      3))
+  roles = TopLevelRoles()
 
   rootRole = TopLevelRole()
   rootRole['role'] = int(RoleType('root'))
-  rootRoleKeyids = Keyids().subtype(implicitTag=tag.Tag(tag.tagClassContext,
-                                                        tag.tagFormatSimple, 4))
+  rootRoleKeyids = Keyids()
   rootRoleKeyid = Keyid(hexValue=rootPublicKeyid)
 
   # Some damned bug in pyasn1 I could not care less to fix right now.
@@ -215,9 +206,7 @@ def set_roles(json_signed, rootPublicKeyid, timestampPublicKeyid,
 
   snapshotRole = TopLevelRole()
   snapshotRole['role'] = int(RoleType('snapshot'))
-  snapshotRoleKeyids = Keyids().subtype(implicitTag=tag.Tag(tag.tagClassContext,
-                                                            tag.tagFormatSimple,
-                                                            4))
+  snapshotRoleKeyids = Keyids()
   snapshotRoleKeyid = Keyid(hexValue=snapshotPublicKeyid)
 
   # Some damned bug in pyasn1 I could not care less to fix right now.
@@ -230,9 +219,7 @@ def set_roles(json_signed, rootPublicKeyid, timestampPublicKeyid,
 
   targetsRole = TopLevelRole()
   targetsRole['role'] = int(RoleType('targets'))
-  targetsRoleKeyids = Keyids().subtype(implicitTag=tag.Tag(tag.tagClassContext,
-                                                           tag.tagFormatSimple,
-                                                           4))
+  targetsRoleKeyids = Keyids()
   targetsRoleKeyid = Keyid(hexValue=targetsPublicKeyid)
 
   # Some damned bug in pyasn1 I could not care less to fix right now.
@@ -245,9 +232,7 @@ def set_roles(json_signed, rootPublicKeyid, timestampPublicKeyid,
 
   timestampRole = TopLevelRole()
   timestampRole['role'] = int(RoleType('timestamp'))
-  timestampRoleKeyids = Keyids()\
-                        .subtype(implicitTag=tag.Tag(tag.tagClassContext,
-                                                     tag.tagFormatSimple, 4))
+  timestampRoleKeyids = Keyids()
   timestampRoleKeyid = Keyid(hexValue=timestampPublicKeyid)
 
   # Some damned bug in pyasn1 I could not care less to fix right now.

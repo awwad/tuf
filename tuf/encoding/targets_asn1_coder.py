@@ -24,20 +24,15 @@ from datetime import datetime #import datetime
 
 
 def get_asn_signed(json_signed):
-  targetsMetadata = TargetsMetadata()\
-                    .subtype(implicitTag=tag.Tag(tag.tagClassContext,
-                                                 tag.tagFormatConstructed, 1))
+  targetsMetadata = TargetsMetadata()
 
   set_asn_targets(json_signed, targetsMetadata)
   set_asn_delegations(json_signed, targetsMetadata)
 
-  signedBody = SignedBody()\
-               .subtype(explicitTag=tag.Tag(tag.tagClassContext,
-                                            tag.tagFormatConstructed, 3))
+  signedBody = SignedBody()
   signedBody['targetsMetadata'] = targetsMetadata
 
-  signed = Signed().subtype(implicitTag=tag.Tag(tag.tagClassContext,
-                                                tag.tagFormatConstructed, 0))
+  signed = Signed()
   signed['type'] = int(RoleType('targets'))
   signed['expires'] = calendar.timegm(datetime.strptime(
       json_signed['expires'], "%Y-%m-%dT%H:%M:%SZ").timetuple())
@@ -72,9 +67,7 @@ def set_asn_delegations(json_signed, targetsMetadata):
   # Optional bit.
   if len(json_signed['delegations']['keys']) > 0 or \
      len(json_signed['delegations']['roles']) > 0:
-    delegations = TargetsDelegations()\
-                  .subtype(implicitTag=tag.Tag(tag.tagClassContext,
-                                               tag.tagFormatSimple, 2))
+    delegations = TargetsDelegations()
     set_asn_keys(json_signed, delegations)
     set_asn_roles(json_signed, delegations)
     targetsMetadata['delegations'] = delegations
@@ -82,8 +75,7 @@ def set_asn_delegations(json_signed, targetsMetadata):
 
 
 def set_asn_keys(json_signed, delegations):
-  keys = PublicKeys().subtype(implicitTag=tag.Tag(tag.tagClassContext,
-                                                  tag.tagFormatSimple, 1))
+  keys = PublicKeys()
   numberOfKeys = 0
 
   # Sort first to ensure a deterministic list in ASN.1.
@@ -106,10 +98,7 @@ def set_asn_keys(json_signed, delegations):
 
 
 def set_asn_roles(json_signed, delegations):
-  prioritizedPathsToRoles = \
-    PrioritizedPathsToRoles().subtype(implicitTag=tag.Tag(tag.tagClassContext,
-                                                          tag.tagFormatSimple,
-                                                          3))
+  prioritizedPathsToRoles = PrioritizedPathsToRoles()
   numberOfDelegations = 0
 
   # Sort first to ensure a deterministic list in ASN.1.
@@ -117,8 +106,7 @@ def set_asn_roles(json_signed, delegations):
   for json_role in sorted_json_roles:
     pathsToRoles = PathsToRoles()
 
-    paths = Paths().subtype(implicitTag=tag.Tag(tag.tagClassContext,
-                                                tag.tagFormatSimple, 1))
+    paths = Paths()
     numberOfPaths = 0
 
     # Sort first to ensure a deterministic list in ASN.1.
@@ -132,16 +120,14 @@ def set_asn_roles(json_signed, delegations):
     pathsToRoles['numberOfPaths'] = 1
     pathsToRoles['paths'] = paths
 
-    roles = MultiRoles().subtype(implicitTag=tag.Tag(tag.tagClassContext,
-                                                     tag.tagFormatSimple, 3))
+    roles = MultiRoles()
     numberOfRoles = 0
 
     # NOTE: There are no multi-role delegations (TAP 3) yet in TUF.
     role = MultiRole()
     role['rolename'] = json_role['name']
 
-    keyids = Keyids().subtype(implicitTag=tag.Tag(tag.tagClassContext,
-                                                  tag.tagFormatSimple, 2))
+    keyids = Keyids()
     numberOfKeyids = 0
 
     # Sort first to ensure a deterministic list in ASN.1.
@@ -174,8 +160,7 @@ def set_asn_roles(json_signed, delegations):
 
 
 def set_asn_targets(json_signed, targetsMetadata):
-  targets = Targets().subtype(implicitTag=tag.Tag(tag.tagClassContext,
-                                                  tag.tagFormatSimple, 1))
+  targets = Targets()
   numberOfTargets = 0
 
   # Sort first to ensure a deterministic list in ASN.1.
@@ -185,13 +170,11 @@ def set_asn_targets(json_signed, targetsMetadata):
 
     targetAndCustom = TargetAndCustom()
 
-    target = Target().subtype(implicitTag=tag.Tag(tag.tagClassContext,
-                                                  tag.tagFormatConstructed, 0))
+    target = Target()
     target['filename'] = filename
     target['length'] = filemeta['length']
 
-    hashes = Hashes().subtype(implicitTag=tag.Tag(tag.tagClassContext,
-                                                  tag.tagFormatSimple, 3))
+    hashes = Hashes()
     numberOfHashes = 0
 
     # Sort first to ensure a deterministic list in ASN.1.
@@ -211,9 +194,7 @@ def set_asn_targets(json_signed, targetsMetadata):
 
     # Optional bit.
     if 'custom' in filemeta:
-      custom = Custom().subtype(implicitTag=tag.Tag(tag.tagClassContext,
-                                                    tag.tagFormatConstructed,
-                                                    1))
+      custom = Custom()
 
       # Sort first to ensure a deterministic list in ASN.1.
       sorted_customkeys = sorted(filemeta['custom'])

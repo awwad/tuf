@@ -24,9 +24,7 @@ from datetime import datetime #import datetime
 
 
 def get_asn_signed(json_signed):
-  timestampMetadata = TimestampMetadata()\
-                      .subtype(implicitTag=tag.Tag(tag.tagClassContext,
-                                                   tag.tagFormatConstructed, 3))
+  timestampMetadata = TimestampMetadata()
   if len(json_signed['meta']) != 1:
     raise tuf.Error('Expecting only one file to be identified in timestamp '
         'metadata: snapshot. Contents of timestamp metadata: ' +
@@ -41,8 +39,7 @@ def get_asn_signed(json_signed):
   timestampMetadata['version'] = meta['version']
   timestampMetadata['length'] = meta['length']
   timestampMetadata['numberOfHashes'] = 1
-  hashes = Hashes().subtype(implicitTag=tag.Tag(tag.tagClassContext,
-                                                tag.tagFormatSimple, 4))
+  hashes = Hashes()
   hash = Hash()
   # TODO: Remove hardcoded hash assumptions here: type and number.
   # Model on code added to snapshotmetadata.py
@@ -52,13 +49,10 @@ def get_asn_signed(json_signed):
   hashes[0] = hash
   timestampMetadata['hashes'] = hashes
 
-  signedBody = SignedBody()\
-               .subtype(explicitTag=tag.Tag(tag.tagClassContext,
-                                            tag.tagFormatConstructed, 3))
+  signedBody = SignedBody()
   signedBody['timestampMetadata'] = timestampMetadata
 
-  signed = Signed().subtype(implicitTag=tag.Tag(tag.tagClassContext,
-                                                tag.tagFormatConstructed, 0))
+  signed = Signed()
   signed['type'] = int(RoleType('timestamp'))
   signed['expires'] = calendar.timegm(datetime.strptime(
       json_signed['expires'], "%Y-%m-%dT%H:%M:%SZ").timetuple())
