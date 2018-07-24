@@ -16,7 +16,7 @@ cffi==1.11.5
 pycrypto==2.6.1
 pynacl==1.2.1
 cryptography==2.3
-pyasn1==0.2.2
+pyasn1==0.4.3
 
 # Testing requirements.  The rest of the testing dependencies available in
 # 'tox.ini'
