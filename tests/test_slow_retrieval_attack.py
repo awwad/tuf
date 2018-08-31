@@ -60,6 +60,8 @@ import tuf.repository_tool as repo_tool
 import tuf.roledb
 import tuf.keydb
 
+import urllib3.exceptions
+
 import six
 
 logger = logging.getLogger('tuf.test_slow_retrieval_attack')
@@ -241,7 +243,7 @@ class TestSlowRetrievalAttack(unittest_toolbox.Modified_TestCase):
 
         # Verify that 'file1.txt' is the culprit.
         self.assertEqual(url_file.replace('\\', '/'), mirror_url)
-        self.assertTrue(isinstance(mirror_error, tuf.exceptions.SlowRetrievalError))
+        self.assertIsInstance(mirror_error, urllib3.exceptions.ReadTimeoutError) #tuf.exceptions.SlowRetrievalError))
 
     else:
       self.fail('TUF did not prevent a slow retrieval attack.')
@@ -276,7 +278,7 @@ class TestSlowRetrievalAttack(unittest_toolbox.Modified_TestCase):
 
         # Verify that 'file1.txt' is the culprit.
         self.assertEqual(url_file.replace('\\', '/'), mirror_url)
-        self.assertTrue(isinstance(mirror_error, tuf.exceptions.SlowRetrievalError))
+        self.assertIsInstance(mirror_error, urllib3.exceptions.ReadTimeoutError) #tuf.exceptions.SlowRetrievalError))
 
     else:
       # Another possibility is to check for a successfully downloaded
