@@ -141,14 +141,25 @@ TUFMetadataDefinitions DEFINITIONS AUTOMATIC TAGS ::= BEGIN
   Signature ::= SEQUENCE {
     keyid               OCTET STRING,
     method              VisibleString,
-    value               OCTET STRING      -- the signature itself
+    value               OCTET STRING
+    -- the signature itself
   }
 
   PublicKey ::= SEQUENCE {
-    publicKeyID         OCTET STRING,
-    publicKeyType       VisibleString,
-    publicKeyValue      OCTET STRING
+    -- This is a slghtly odd construction, but it models exactly what is used
+    -- in the standard, JSON-compatible TUF metadata format.
+    keyval              SEQUENCE {
+      type              VisibleString('public'),
+      value             OCTET STRING
+    },
+    keytype             VisibleString,
+    scheme              VisibleString,
+    keyid_hash_algorithms SEQUENCE OF VisibleString
   }
+  -- A more streamlined definition of PublicKey probably look more like:
+  --  {  keyid             OCTET STRING,
+  --     public_key_value  OCTET STRING
+  --  }
 
 
 

@@ -26,6 +26,7 @@ mccabe==0.6.1
 pbr==4.2.0
 pluggy==0.7.1
 py==1.5.4
+pyasn1==0.4.4
 pycparser==2.18
 pylint==2.1.1 ; python_version >= "3.0"
 pylint==1.9.3 ; python_version < "3.0"
