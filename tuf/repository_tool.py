@@ -86,18 +86,15 @@ METADATA_EXTENSION = '.' + tuf.conf.METADATA_FORMAT
 # Expiration date delta, in seconds, of the top-level roles.  A metadata
 # expiration date is set by taking the current time and adding the expiration
 # seconds listed below.
+# Set expiration durations to end of current unix time epoch minus current time
+# minus about one day.  (So that resulting expiration date is roughly the end
+# of epoch, max possible.)
+TIME_TO_EXPIRE_AROUND_END_OF_EPOCH = 2147483647 - 86400 - int(time.time())
 
-# Initial 'root.json' expiration time of 1 year. 
-ROOT_EXPIRATION = 631138000
-
-# Initial 'targets.json' expiration time of 3 months. 
-TARGETS_EXPIRATION = 631138000
-
-# Initial 'snapshot.json' expiration time of 1 week. 
-SNAPSHOT_EXPIRATION = 631138000
-
-# Initial 'timestamp.json' expiration time of 1 day.
-TIMESTAMP_EXPIRATION = 631138000
+ROOT_EXPIRATION = TIME_TO_EXPIRE_AROUND_END_OF_EPOCH
+TARGETS_EXPIRATION = TIME_TO_EXPIRE_AROUND_END_OF_EPOCH
+SNAPSHOT_EXPIRATION = TIME_TO_EXPIRE_AROUND_END_OF_EPOCH
+TIMESTAMP_EXPIRATION = TIME_TO_EXPIRE_AROUND_END_OF_EPOCH
 
 try:
   tuf.keys.check_crypto_libraries(['rsa', 'ed25519', 'general'])
