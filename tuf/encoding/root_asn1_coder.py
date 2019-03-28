@@ -33,11 +33,16 @@ def get_asn_signed(json_signed):
   timestampPublicKeyid = json_signed['roles']['timestamp']['keyids'][0]
   snapshotPublicKeyid = json_signed['roles']['snapshot']['keyids'][0]
   targetsPublicKeyid = json_signed['roles']['targets']['keyids'][0]
+  # timeserver_public_keyid = json_signed['roles']['Timeserver']['keyids'][0]
 
   keys = set_keys(json_signed, rootPublicKeyid, timestampPublicKeyid,
-                  snapshotPublicKeyid, targetsPublicKeyid, rootMetadata)
+                  snapshotPublicKeyid, targetsPublicKeyid,
+                  # timeserver_public_keyid,
+                  rootMetadata)
   roles = set_roles(json_signed, rootPublicKeyid, timestampPublicKeyid,
-                  snapshotPublicKeyid, targetsPublicKeyid, rootMetadata)
+                  snapshotPublicKeyid, targetsPublicKeyid,
+                  # timeserver_public_key_id,
+                  rootMetadata)
 
   signedBody = SignedBody()\
                .subtype(explicitTag=tag.Tag(tag.tagClassContext,
@@ -117,7 +122,8 @@ def get_json_signed(asn_metadata):
 
 
 def set_keys(json_signed, rootPublicKeyid, timestampPublicKeyid,
-             snapshotPublicKeyid, targetsPublicKeyid, rootMetadata):
+             snapshotPublicKeyid, targetsPublicKeyid, # timeserver_public_keyid,
+             rootMetadata):
   keys = PublicKeys().subtype(implicitTag=tag.Tag(tag.tagClassContext,
                                                   tag.tagFormatSimple, 1))
 
@@ -168,12 +174,27 @@ def set_keys(json_signed, rootPublicKeyid, timestampPublicKeyid,
   targetsPublicKey['publicKeyValue'] = targetsPublicKeyValue
   keys[3] = targetsPublicKey
 
+  # # Note that this is hideous and that ASN.1 code improvements are waiting for
+  # # the switch to the main TUF repository.  Duplicating THIS makes me sick....
+  # timeserver_public_key = PublicKey()
+  # # NOTE: Only 1 key allowed for now!
+  # timeserver_public_key['publicKeyid'] = Keyid(hexValue=timeserver_public_keyid)
+  # timeserver_public_key['publicKeyType'] = int(PublicKeyType(
+  #     json_signed['keys'][timeserver_public_keyid]['keytype']))
+  # timeserver_public_key['publicKeyValue'] = OctetString(
+  #     hexValue=json_signed['keys'][timeserver_public_key_id]['keyval']['public'])
+  # keys[4] = timeserver_public_key
+
+  # rootMetadata['numberOfKeys'] = 5
+
+
   rootMetadata['numberOfKeys'] = 4
   rootMetadata['keys'] = keys
 
 
 def set_roles(json_signed, rootPublicKeyid, timestampPublicKeyid,
-              snapshotPublicKeyid, targetsPublicKeyid, rootMetadata):
+              snapshotPublicKeyid, targetsPublicKeyid, # timeserver_keyid,
+              rootMetadata):
   roles = TopLevelRoles().subtype(implicitTag=tag.Tag(tag.tagClassContext,
                                                       tag.tagFormatConstructed,
                                                       3))
@@ -237,5 +258,28 @@ def set_roles(json_signed, rootPublicKeyid, timestampPublicKeyid,
   # Some damned bug in pyasn1 I could not care less to fix right now.
   roles.setComponentByPosition(3, timestampRole, False)
 
+  # # hold your nose and code, hold your nose and code, hold your nose and code....
+  # #
+  # timeserver_delegation = TopLevelRole()  # So fucking stupid.
+  # timeserver_delegation['role'] = int(RoleType('timestamp'))
+  # timeserver_keyids = Keyids().subtype(implicitTag=tag.Tag(
+  #     tag.tagClassContext, tag.tagFormatSimple, 4))
+  # timeserver_keyid = Keyid(hexValue=timeserver_keyid)
+
+  # timeserver_keyids.setComponentByPosition(0, timeserver_keyid, False)
+  # timeserver_delegation['numberOfKeyids'] = 1
+  # timeserver_delegation['keyids'] = timeserver_keyids
+  # timeserver_delegation['threshold'] = 1
+  # roles.setComponentByPosition(4, timeserver_delegation, False)
+
+  # # UGH.
+  # rootMetadata['numberOfRoles'] = 5
+
+
   rootMetadata['numberOfRoles'] = 4
   rootMetadata['roles'] = roles
+
+
+
+
+

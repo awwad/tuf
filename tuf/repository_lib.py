@@ -57,6 +57,24 @@ import iso8601
 import six
 
 
+
+
+# Uptane demo Timeserver key
+TEST_TIMESERVER_KEY = {
+    "keyid_hash_algorithms": ["sha256", "sha512"],
+    "keyval": {"public": "5d7750b208dfc7ade8f6106b9c3fa25162d5a184f302161e429f19a79e66a908"},
+    "keytype": "ed25519"}
+TEST_TIMESERVER_KEYID = '79c796d7e87389d1ebad04edce49faef611d139ee41ea9fb1931732afbfaac2e'
+
+# Uptane demo Director's timestamp key
+# TEST_TIMESERVER_KEY = {
+#     "keyid_hash_algorithms": ["sha256", "sha512"],
+#     "keyval": {"public": "d1ab5126fd6f0e30944910e81c0448044dfe9d5a39f478212b2afa913bb7ca7c"},
+#     "keytype": "ed25519"}
+# TEST_TIMESERVER_KEYID = 'da9c65c96c5c4072f6984f7aa81216d776aca6664d49cb4dfafbc7119320d9cc'
+
+
+
 # See 'log.py' to learn how logging is handled in TUF.
 logger = logging.getLogger('tuf.repository_lib')
 
@@ -1484,8 +1502,29 @@ def generate_root_metadata(version, expiration_date, consistent_snapshot,
     
     # Generate and store the role data belonging to the processed role.
     role_threshold = tuf.roledb.get_role_threshold(rolename, repository_name)
-    role_metadata = tuf.formats.make_role_metadata(keyids, role_threshold)
+    role_metadata = tuf.formats.make_role_metadata(keyids, role_threshold)  # <~> AWFUL.
     roledict[rolename] = role_metadata
+
+
+
+    # TODO: <~> KILL THIS TEST CODE.
+
+    # UGLY.  TEST, DEBUG ONLY.  Add role metadata for Timeserver.
+    # I'm using the Uptane demo Timeserver key's keyid here.
+    timeserver_keyid = TEST_TIMESERVER_KEYID
+    timeserver_threshold = 1
+    roledict['Timeserver'] = tuf.formats.build_dict_conforming_to_schema(
+        tuf.formats.ROLE_SCHEMA,  # This schema is used for too many different conceptual things.
+        keyids=[timeserver_keyid],
+        threshold=timeserver_threshold)
+
+    # Add the Timeserver key to the keydict
+    if timeserver_keyid not in keydict:
+      keydict[timeserver_keyid] = tuf.keys.format_keyval_to_metadata(
+          timeserver_key['keytype'], timeserver_key['keyval'], private=False)
+
+
+
 
   # Generate the root metadata object.
   # Use generalized build_dict_conforming_to_schema func to produce a dict that
